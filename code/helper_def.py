@@ -11,5 +11,6 @@ def load_img(file, colorkey=None):
         img.set_colorkey(colorkey)
     else:
         img = img.convert_alpha()
+    # устанавливаю размеры спрайта под размеры плитки (tilesize)
     img = pygame.transform.scale(img, (TILESIZE, TILESIZE))
     return img
