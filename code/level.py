@@ -1,7 +1,9 @@
 import pygame
+from debug import debug
 from settings import *
 from tile import Tile
 from player import Player
+from helper_def import import_csv_layout
 
 # создание и отрисовка уровня
 class Level:
@@ -28,8 +30,10 @@ class Level:
                     Tile((x,y),[self.visible_sprites,self.obstacle_sprites])
                 if col == 'P':
                     # игрока сохраним в переменную - в дальнейшем это понадобится
-                    self.player = Player((x,y), [self.visible_sprites])
+                    self.player = Player((x,y), [self.visible_sprites], self.obstacle_sprites )
 
     def draw(self):
         # рисуем только группу видимых спрайтов
         self.visible_sprites.draw(self.screen)
+        self.visible_sprites.update()
+        debug(self.player.direction)
