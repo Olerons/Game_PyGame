@@ -49,9 +49,8 @@ class CameraGroup(pygame.sprite.Group):
         self.offset.x = player.rect.centerx - self.half_width
         self.offset.y = player.rect.centery - self.half_height
 
-        # перебираем и отрисовываем каждый спрайт в данной группе
-        # но рисуем с учетом смещения
-        for sprite in self.sprites():
+        #сортируем спрайты перед тем, как их рисовать
+        for sprite in sorted(self.sprites(), key=lambda sprt: sprt.rect.centery):
             offset_pos = sprite.rect.topleft - self.offset
             self.screen.blit(sprite.image, offset_pos)
 
