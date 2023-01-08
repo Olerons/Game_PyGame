@@ -25,3 +25,14 @@ def import_csv_layout(path):
         for row in layout:
             map.append(list(row))
     return map
+
+def import_brushes(path, size):
+    brush_list = []
+    full_img = pygame.image.load(path)
+
+    for y in range(0,full_img.get_size()[1], size[1]):
+        for x in range(0,full_img.get_size()[0], size[0]):
+            img = full_img.subsurface(pygame.Rect((x, y), size))
+            brush_list.append(pygame.transform.scale(img, (TILESIZE, TILESIZE)))
+
+    return brush_list

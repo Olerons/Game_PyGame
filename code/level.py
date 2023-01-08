@@ -3,7 +3,7 @@ from debug import debug
 from settings import *
 from tile import Tile
 from player import Player
-from helper_def import import_csv_layout
+from helper_def import import_csv_layout, import_brushes
 
 class Level:
     def __init__(self):
@@ -15,15 +15,33 @@ class Level:
         self.create_map()
 
     def create_map(self):
-        for row_index, row in enumerate(WORLD_MAP):
-            for col_index, col in enumerate(row):
-                x = col_index * TILESIZE
-                y = row_index * TILESIZE
-                if col == 'X':
-                    Tile((x,y),[self.visible_sprites,self.obstacle_sprites])
-                if col == 'P':
-                    self.player = Player((x,y), [self.visible_sprites], self.obstacle_sprites )
+        layouts = {
+            'tower_bg': import_csv_layout('../data/map/world_map_tower.csv'),
+            'tower_up': import_csv_layout('../data/map/world_map_tower2.csv'),
+            'player': import_csv_layout('../data/map/world_map_player.csv'),
+            'obstacle': import_csv_layout('../data/map/world_map_obstacle.csv')
+        }
 
+        brushes = {
+            'world': import_brushes('../data/img/Overworld.png', (16,16))
+        }
+
+        for style, layout in layouts.items():
+            for row_index, row in enumerate(layout):
+                for col_index, col in enumerate(row):
+                    if col != -1:
+                        x = col_index * TILESIZE
+                        y = row_index * TILESIZE
+                        if style == 'tower_bg':
+                            Tile((x,y), [self.visible_sprites], brushes['world'][int(col)])
+                        if style == 'tower_up':
+                            Tile((x, y), [self.visible_sprites], brushes['world'][int(col)])
+                        if style == 'obstacle':
+                            if col == '0':
+                                Tile((x, y), [self.obstacle_sprites])
+                        if style == 'player':
+                            if col == '0':
+                                self.player = Player((x,y), [self.visible_sprites], self.obstacle_sprites )
     def draw(self):
         # теперь мы рисуем спрайты с помощью нашего отдельного метода
         self.visible_sprites.custom_draw(self.player)
@@ -50,8 +68,6 @@ class CameraGroup(pygame.sprite.Group):
         # двигаем фон так же, как и все остальные спрайты
         bg_offset = self.bg_rect.topleft - self.offset
         self.screen.blit(self.bg_surf, bg_offset)
-
         for sprite in sorted(self.sprites(), key=lambda sprt: sprt.rect.centery):
             offset_pos = sprite.rect.topleft - self.offset
             self.screen.blit(sprite.image, offset_pos)
-
