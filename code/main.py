@@ -4,7 +4,7 @@ from settings import *
 from level import Level
 from debug import debug
 
-# Основной класс игры
+
 class Game:
     def __init__(self):
         pygame.init()
@@ -40,11 +40,7 @@ class Game:
     def render(self):
         self.game_screen.fill('black')
 
-        # здесь идет отрисовка уровня
         self.level.draw()
-
-        # специальная функция debug (debug.py), которая позволяет
-        # выводить на экран отладочную информацию
         #debug('Test')
 
 
