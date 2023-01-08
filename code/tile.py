@@ -7,3 +7,7 @@ class Tile(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = load_img('../data/test/wall.png')
         self.rect = self.image.get_rect(topleft = pos)
+
+        # у спрайта тайла тоже должен быть hitbox.
+        # это очень поможет в дальнейшем
+        self.hitbox = self.rect.inflate(0, -10)
